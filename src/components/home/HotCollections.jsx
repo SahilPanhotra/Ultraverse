@@ -1,18 +1,29 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import AuthorImage from "../../images/author_thumbnail.jpg";
-import nftImage from "../../images/nftImage.jpg";
+import OwlCarousel from "react-owl-carousel";
+import "../../css/styles/owl.carousel.css";
+import "../../css/styles/owl.theme.css";
 import { useEffect } from "react";
 import axios from "axios";
+import NFTCard from "../UI/NFTCard";
 
 const HotCollections = () => {
+  const [loading, setLoading] = useState(true);
   const [nftData, setNftData] = useState([]);
   useEffect(() => {
-    axios
-      .get(
-        "https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections"
-      )
-      .then((response) => setNftData(response.data));
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const { data: response } = await axios.get(
+          "https://us-central1-nft-cloud-functions.cloudfunctions.net/hotCollections"
+        );
+        setNftData(response);
+      } catch (error) {
+        console.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, []);
   return (
     <section id="section-collections" className="no-bottom">
@@ -24,33 +35,25 @@ const HotCollections = () => {
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
-          {nftData.slice(0, 4).map((nft, index) => (
-            <div className="col-lg-3 col-md-6 col-sm-6 col-xs-12" key={index}>
-              <div className="nft_coll">
-                <div className="nft_wrap">
-                  <Link to="/item-details">
-                    <img src={nft.nftImage} className="lazy img-fluid" alt="" />
-                  </Link>
-                </div>
-                <div className="nft_coll_pp">
-                  <Link to="/author">
-                    <img
-                      className="lazy pp-coll"
-                      src={nft.authorImage}
-                      alt="author"
-                    />
-                  </Link>
-                  <i className="fa fa-check"></i>
-                </div>
-                <div className="nft_coll_info">
-                  <Link to="/explore">
-                    <h4>{nft.title}</h4>
-                  </Link>
-                  <span>{nft.code}</span>
-                </div>
-              </div>
-            </div>
-          ))}
+          {!loading&&<OwlCarousel
+            className="owl-theme"
+            loop={false}
+            rewind
+            margin={10}
+            nav
+            dots={false}
+            responsive={{
+              0: { items: 1 },
+              368: { items: 2 },
+              768: { items: 3 },
+              1240: { items: 4 },
+            }}
+            items={4}
+          >
+            {nftData.map((nft, index) => (
+              <NFTCard nft={nft} key={nft.nftId} />
+            ))}
+          </OwlCarousel>}
         </div>
       </div>
     </section>
