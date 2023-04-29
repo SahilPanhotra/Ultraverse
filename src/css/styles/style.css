@@ -13180,6 +13180,7 @@ a.read_more i {
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   margin-bottom: 10px;
+  margin-right: 10px;
 }
 
 .nft_coll.style-2 {
@@ -16598,7 +16599,13 @@ img {
     display: none;
   }
 }
-
+/* slick */
+.arrows:hover{
+  box-shadow: 5px 5px 30px 0 rgba(0,0,0,.2);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  transition: .3s ease;
+}
 /* section control */
 @media only screen and (min-device-width: 768) and (max-device-width: 1024) and (orientation: portrait) {
   section {

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import OwlCarousel from "react-owl-carousel";
-import "../../css/styles/owl.carousel.css";
-import "../../css/styles/owl.theme.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { useEffect } from "react";
 import axios from "axios";
 import NFTCard from "../UI/NFTCard";
+import settings from "../utilities/CarouselSettings";
 
 const HotCollections = () => {
   const [loading, setLoading] = useState(true);
@@ -35,25 +36,13 @@ const HotCollections = () => {
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
-          {!loading&&<OwlCarousel
-            className="owl-theme"
-            loop={false}
-            rewind
-            margin={10}
-            nav
-            dots={false}
-            responsive={{
-              0: { items: 1 },
-              368: { items: 2 },
-              768: { items: 3 },
-              1240: { items: 4 },
-            }}
-            items={4}
-          >
-            {nftData.map((nft, index) => (
-              <NFTCard nft={nft} key={nft.nftId} />
-            ))}
-          </OwlCarousel>}
+          {!loading && (
+            <Slider {...settings}>
+              {nftData.map((nft) => (
+                <NFTCard nft={nft} key={nft.nftId} />
+              ))}
+            </Slider>
+          )}
         </div>
       </div>
     </section>
