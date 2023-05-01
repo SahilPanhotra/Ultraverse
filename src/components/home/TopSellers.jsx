@@ -15,7 +15,6 @@ const TopSellers = () => {
           "https://us-central1-nft-cloud-functions.cloudfunctions.net/topSellers"
         );
         setTopSeller(response);
-        console.log(response);
       } catch (error) {
         console.error(error.message);
       } finally {
