@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import AuthorImage from "../../images/author_thumbnail.jpg";
+import axios from "axios";
+import Skeleton from "../UI/Skeleton";
 
 const TopSellers = () => {
+  const [loading, setLoading] = useState(true);
+  const [topSeller, setTopSeller] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const { data: response } = await axios.get(
+          "https://us-central1-nft-cloud-functions.cloudfunctions.net/topSellers"
+        );
+        setTopSeller(response);
+        console.log(response);
+      } catch (error) {
+        console.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <section id="section-popular" className="pb-5">
       <div className="container">
@@ -15,21 +36,41 @@ const TopSellers = () => {
           </div>
           <div className="col-md-12">
             <ol className="author_list">
-              {new Array(12).fill(0).map((_, index) => (
-                <li key={index}>
+              {topSeller.map((seller, index) => (
+                <li key={seller.id}>
                   <div className="author_list_pp">
-                    <Link to="/author">
-                      <img
-                        className="lazy pp-author"
-                        src={AuthorImage}
-                        alt=""
-                      />
-                      <i className="fa fa-check"></i>
+                    <Link to={`/author${seller.authorId}`}>
+                      {!loading ? (
+                        <>
+                          <img
+                            className="lazy pp-author"
+                            src={seller.authorImage}
+                            alt=""
+                          />
+                          <i className="fa fa-check"></i>
+                        </>
+                      ) : (
+                        <Skeleton width={50} height={50} borderRadius={"50%"} />
+                      )}
                     </Link>
                   </div>
                   <div className="author_list_info">
-                    <Link to="/author">Monica Lucas</Link>
-                    <span>2.1 ETH</span>
+                    <Link to="/author">
+                      {!loading ? (
+                        <span>{seller.authorName}</span>
+                      ) : (
+                        <span>
+                          <Skeleton width={60} height={"1.25em"} />
+                        </span>
+                      )}
+                    </Link>
+                    {!loading ? (
+                      <span>{seller.price}ETH</span>
+                    ) : (
+                      <span>
+                        <Skeleton width={30} height={"1.25em"} />
+                      </span>
+                    )}
                   </div>
                 </li>
               ))}
