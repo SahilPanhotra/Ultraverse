@@ -1,10 +1,33 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import EthImage from "../images/ethereum.svg";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AuthorImage from "../images/author_thumbnail.jpg";
 import nftImage from "../images/nftImage.jpg";
+import axios from "axios";
+import Skeleton from "../components/UI/Skeleton";
 
 const ItemDetails = () => {
+  const [loading, setLoading] = useState(true);
+  const [itemDetail, setItemDetail] = useState([]);
+  let location = useLocation();
+  const nftId = location.pathname.slice(14);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const { data: response } = await axios.get(
+          `https://us-central1-nft-cloud-functions.cloudfunctions.net/itemDetails?nftId=${nftId}`
+        );
+        setItemDetail(response);
+        console.log(response);
+      } catch (error) {
+        console.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [nftId]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -17,43 +40,84 @@ const ItemDetails = () => {
           <div className="container">
             <div className="row">
               <div className="col-md-6 text-center">
-                <img
-                  src={nftImage}
-                  className="img-fluid img-rounded mb-sm-30 nft-image"
-                  alt=""
-                />
+                {!loading ? (
+                  <img
+                    src={itemDetail.nftImage}
+                    className="img-fluid img-rounded mb-sm-30 nft-image"
+                    alt=""
+                  />
+                ) : (
+                  <Skeleton width={"100%"} height={"100%"} />
+                )}
               </div>
               <div className="col-md-6">
                 <div className="item_info">
-                  <h2>Rainbow Style #194</h2>
-
+                  <h2>
+                    {!loading ? (
+                      <>{itemDetail.title}</>
+                    ) : (
+                      <Skeleton width={200} height={"1.5em"} />
+                    )}
+                  </h2>
                   <div className="item_info_counts">
-                    <div className="item_info_views">
-                      <i className="fa fa-eye"></i>
-                      100
-                    </div>
-                    <div className="item_info_like">
-                      <i className="fa fa-heart"></i>
-                      74
-                    </div>
+                    {!loading ? (
+                      <div className="item_info_views">
+                        <i className="fa fa-eye"></i>
+                        {itemDetail.views}
+                      </div>
+                    ) : (
+                      <Skeleton width={50} height={"2em"} />
+                    )}
+                    {!loading ? (
+                      <div className="item_info_like">
+                        <i className="fa fa-heart"></i>
+                        {itemDetail.likes}
+                      </div>
+                    ) : (
+                      <Skeleton width={50} height={"2em"} />
+                    )}
                   </div>
                   <p>
-                    doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
-                    illo inventore veritatis et quasi architecto beatae vitae
-                    dicta sunt explicabo.
+                    {!loading ? (
+                      <>{itemDetail.description}</>
+                    ) : (
+                      <>
+                        <Skeleton height={100} width={500} />
+                      </>
+                    )}
                   </p>
                   <div className="d-flex flex-row">
                     <div className="mr40">
                       <h6>Owner</h6>
                       <div className="item_author">
                         <div className="author_list_pp">
-                          <Link to="/author">
-                            <img className="lazy" src={AuthorImage} alt="" />
-                            <i className="fa fa-check"></i>
+                          <Link to={`/author/${itemDetail.ownerId}`}>
+                            {!loading ? (
+                              <>
+                                <img
+                                  className="lazy"
+                                  src={itemDetail.ownerImage}
+                                  alt=""
+                                />
+                                <i className="fa fa-check"></i>
+                              </>
+                            ) : (
+                              <Skeleton
+                                width={50}
+                                height={50}
+                                borderRadius={"50%"}
+                              />
+                            )}
                           </Link>
                         </div>
                         <div className="author_list_info">
-                          <Link to="/author">Monica Lucas</Link>
+                          {!loading ? (
+                            <Link to={`/author/${itemDetail.ownerId}`}>
+                              {itemDetail.ownerName}
+                            </Link>
+                          ) : (
+                            <Skeleton width={100} />
+                          )}
                         </div>
                       </div>
                     </div>
@@ -64,21 +128,50 @@ const ItemDetails = () => {
                       <h6>Creator</h6>
                       <div className="item_author">
                         <div className="author_list_pp">
-                          <Link to="/author">
-                            <img className="lazy" src={AuthorImage} alt="" />
-                            <i className="fa fa-check"></i>
+                          <Link to={`/author/${itemDetail.creatorId}`}>
+                            {!loading ? (
+                              <>
+                                <img
+                                  className="lazy"
+                                  src={itemDetail.creatorImage}
+                                  alt=""
+                                />
+                                <i className="fa fa-check"></i>
+                              </>
+                            ) : (
+                              <Skeleton
+                                width={50}
+                                height={50}
+                                borderRadius={"50%"}
+                              />
+                            )}
                           </Link>
                         </div>
                         <div className="author_list_info">
-                          <Link to="/author">Monica Lucas</Link>
+                          {!loading ? (
+                            <Link to={`/author/${itemDetail.creatorId}`}>
+                              {itemDetail.creatorName}
+                            </Link>
+                          ) : (
+                            <Skeleton width={100} />
+                          )}
                         </div>
                       </div>
                     </div>
                     <div className="spacer-40"></div>
                     <h6>Price</h6>
                     <div className="nft-item-price">
-                      <img src={EthImage} alt="" />
-                      <span>1.85</span>
+                      {!loading ? (
+                        <>
+                          <img src={EthImage} alt="" />
+                          <span>{itemDetail.price}</span>
+                        </>
+                      ) : (
+                        <>
+                          <Skeleton width={20} height={40} />
+                          <Skeleton width={80} height={40} />
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
