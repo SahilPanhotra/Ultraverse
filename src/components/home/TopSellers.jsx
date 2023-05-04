@@ -37,7 +37,7 @@ const TopSellers = () => {
               {topSeller.map((seller, index) => (
                 <li key={seller.id}>
                   <div className="author_list_pp">
-                    <Link to={`/author${seller.authorId}`}>
+                    <Link to={`/author/${seller.authorId}`}>
                       {!loading ? (
                         <>
                           <img
@@ -53,7 +53,7 @@ const TopSellers = () => {
                     </Link>
                   </div>
                   <div className="author_list_info">
-                    <Link to="/author">
+                    <Link to={`/author/${seller.authorId}`}>
                       {!loading ? (
                         <span>{seller.authorName}</span>
                       ) : (

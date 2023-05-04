@@ -21,16 +21,16 @@ const NFTCard = ({ nft }) => {
   return (
     <div key={nft.nftId} className="nft_coll">
       <div className="nft_wrap">
-        <Link to="/item-details">
+        <Link to={`/item-details/${nft.nftId}`}>
           {img ? (
             <img src={img.src} className="lazy img-fluid" alt="" />
           ) : (
-            <Skeleton width={"100%"} height={'100%'} />
+            <Skeleton width={"100%"} height={"100%"} />
           )}
         </Link>
       </div>
       <div className="nft_coll_pp">
-        <Link to="/author">
+        <Link to={`/author/${nft.authorId}`}>
           {img ? (
             <img className="lazy pp-coll" src={nft.authorImage} alt="author" />
           ) : (
@@ -40,7 +40,7 @@ const NFTCard = ({ nft }) => {
         <i className="fa fa-check"></i>
       </div>
       <div className="nft_coll_info">
-        <Link to="/explore">
+        <Link to={`/item-details/${nft.nftId}`}>
           {img ? (
             <h4>{nft.title}</h4>
           ) : (
