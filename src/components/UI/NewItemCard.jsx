@@ -34,7 +34,13 @@ const NewItemCard = ({
   }, [nftImage, expiryDate]);
 
   return (
-    <div className="nft__item " key={index}>
+    <div
+      data-aos="fade-left"
+      data-aos-easing="ease-out-cubic"
+      data-aos-duration="1200"
+      className="nft__item "
+      key={index}
+    >
       <div className="author_list_pp">
         <Link
           to={`/author/${authorId}`}

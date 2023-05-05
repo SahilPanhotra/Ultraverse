@@ -19,7 +19,13 @@ const NFTCard = ({ nft }) => {
   }, [nft.nftImage]);
 
   return (
-    <div key={nft.nftId} className="nft_coll">
+    <div
+      data-aos="fade-left"
+      data-aos-easing="ease-out-cubic"
+      data-aos-duration="1200"
+      key={nft.nftId}
+      className="nft_coll"
+    >
       <div className="nft_wrap">
         <Link to={`/item-details/${nft.nftId}`}>
           {img ? (

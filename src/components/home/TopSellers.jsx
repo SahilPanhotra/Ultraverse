@@ -28,7 +28,13 @@ const TopSellers = () => {
         <div className="row">
           <div className="col-lg-12">
             <div className="text-center">
-              <h2>Top Sellers</h2>
+              <h2
+                data-aos="fade-up"
+                data-aos-easing="ease-out-cubic"
+                data-aos-duration="1000"
+              >
+                Top Sellers
+              </h2>
               <div className="small-border bg-color-2"></div>
             </div>
           </div>
@@ -41,11 +47,19 @@ const TopSellers = () => {
                       {!loading ? (
                         <>
                           <img
+                            data-aos="fade-up"
+                            data-aos-easing="ease-out-cubic"
+                            data-aos-duration="1000"
                             className="lazy pp-author"
                             src={seller.authorImage}
                             alt=""
                           />
-                          <i className="fa fa-check"></i>
+                          <i
+                            data-aos="fade-up"
+                            data-aos-easing="ease-out-cubic"
+                            data-aos-duration="1000"
+                            className="fa fa-check"
+                          ></i>
                         </>
                       ) : (
                         <Skeleton width={50} height={50} borderRadius={"50%"} />
@@ -55,7 +69,13 @@ const TopSellers = () => {
                   <div className="author_list_info">
                     <Link to={`/author/${seller.authorId}`}>
                       {!loading ? (
-                        <span>{seller.authorName}</span>
+                        <span
+                          data-aos="fade-up"
+                          data-aos-easing="ease-out-cubic"
+                          data-aos-duration="1000"
+                        >
+                          {seller.authorName}
+                        </span>
                       ) : (
                         <span>
                           <Skeleton width={60} height={"1.25em"} />
@@ -63,7 +83,13 @@ const TopSellers = () => {
                       )}
                     </Link>
                     {!loading ? (
-                      <span>{seller.price}ETH</span>
+                      <span
+                        data-aos="fade-up"
+                        data-aos-easing="ease-out-cubic"
+                        data-aos-duration="1000"
+                      >
+                        {seller.price}ETH
+                      </span>
                     ) : (
                       <span>
                         <Skeleton width={30} height={"1.25em"} />

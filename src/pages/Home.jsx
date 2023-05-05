@@ -5,17 +5,19 @@ import Landing from "../components/home/Landing";
 import LandingIntro from "../components/home/LandingIntro";
 import NewItems from "../components/home/NewItems";
 import TopSellers from "../components/home/TopSellers";
+import Aos from "aos";
 
 const Home = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
+    Aos.init();
   }, []);
 
   return (
     <div id="wrapper">
       <div className="no-bottom no-top" id="content">
         <div id="top"></div>
-        <Landing />
+        <Landing  />
         <LandingIntro />
         <HotCollections />
         <NewItems />
